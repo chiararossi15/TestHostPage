@@ -1,0 +1,32 @@
+const http = require('http');
+const url = require('url');
+
+const server = http.createServer((req, res) => {
+  const queryData = url.parse(req.url, true).query;
+  const alias = queryData.alias;
+  const productId = queryData.productId;
+
+  // Generate the dynamic URL
+  const dynamicURL = `myapp://signup?alias=${alias}&productId=${productId}`;
+
+  // HTML content with a clickable link
+  const htmlContent = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+    </head>
+    <body>
+        <p>Click the link below to open the app:</p>
+        <a href="${dynamicURL}">Open App</a>
+    </body>
+    </html>
+  `;
+
+  res.writeHead(200, { 'Content-Type': 'text/html' });
+  res.end(htmlContent);
+});
+
+const port = 3000;
+server.listen(port, () => {
+  console.log(`Server listening on port ${port}`);
+});
